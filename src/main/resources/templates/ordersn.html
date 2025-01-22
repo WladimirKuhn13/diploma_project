@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>All orders</title>
+    <style>
+        /* Стили для вкладок */
+        .tab {
+            display: none;
+        }
+        .tab.active {
+            display: block;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            padding: 10px;
+        }
+        .tab-button {
+            padding: 10px 20px;
+            margin-right: 5px;
+            background-color: #e7e7e7;
+            border: none;
+            border-radius: 5px;
+        }
+        .tab-button.active {
+            background-color: #d1d1d1;
+        }
+    </style>
+</head>
+<body>
+<h1>All orders in database</h1>
+<div class="tabs">
+    <button class="tab-button active" onclick="showTab('orders')">Заказы</button>
+    <button class="tab-button" onclick="showTab('tools')">Инструменты</button>
+</div>
+
+<div id="orders" class="tab active">
+    <div id="notificationArea"></div>
+    <table>
+        <thead>
+        <tr>
+            <th>Id заявки</th>
+            <th>Id менеджера</th>
+            <th>Название организации</th>
+            <th>Дата создания</th>
+            <th>Срок исполнения</th>
+            <th>Газовая смесь</th>
+            <th>Объем баллонов</th>
+            <th>Количество баллонов</th>
+            <th>Статус</th>
+            <th>Тип</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.managerId}"></td>
+            <td th:text="${order.client}"></td>
+            <td th:text="${order.creationDate}"></td>
+            <td th:text="${order.deadline}"></td>
+            <td th:text="${order.gasMixture}"></td>
+            <td th:text="${order.gasСylinderVolume}"></td>
+            <td th:text="${order.numberOfGasCylinder}"></td>
+            <td th:text="${order.status}"></td>
+            <td th:text="${order.typeOrder}"></td>
+            <td th:if="${currentUserRole == 'ROLE_MANAGER'}">
+                <form action="#" th:action="@{order-update/{id}(id=${order.id})}" target="_blank">
+                    <button>Редактировать заявку</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="tools" class="tab">
+    <h2>Ваши заявки</h2>
+    <div th:if="${currentUserRole == 'ROLE_MANAGER'}">
+        <p>Выберите действие</p>
+        <form action="create-gas-order" target="_blank">
+            <button>Создать заявку</button>
+        </form>
+    </div>
+    <div th:if="${currentUserRole == 'ROLE_STOCK_HEAD' || currentUserRole == 'ROLE_STOCK'}">
+        <table>
+            <tr th:each="order : ${orders}" th:if="${order.status == 'Принято на складе'}">
+                <td th:number="${order.id}"></td>
+                <td th:text="${order.responsibleUserName}"></td>
+                <td th:text="${order.client}"></td>
+                <td th:date="${order.deadline}"></td>
+                <td th:text="${order.gasMixture}"></td>
+                <td th:number="${order.gasСylinderVolume}"></td>
+                <td th:number="${order.numberOfGasCylinder}"></td>
+                <td th:text="${order.status}"></td>
+                <td th:text="${order.typeOrder}"></td>
+                <td th:if="${currentUserRole == 'ROLE_STOCK_HEAD'}">
+                    <form action="#" th:action="@{/orders}" th:object="${order}" method="post">
+                        <label>Выберите отдел для передачи заявки</label>
+                        <select th:field="*{order.status}">
+                            <option th:value="Передано + ' ' + на + ' ' + участок + ' ' + заправки" th:text="Участок + ' ' + заправки"></option>
+                            <option th:value="Передано + ' ' + на + ' ' + участок + ' ' + подготовки" th:text="Участок + ' ' + подготовки"></option>
+                        </select>
+                        <button type="submit">Передать</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Уведомление</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                Здесь будет текст уведомления.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="acceptButton">Ок</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<script>
+    // Подключение к WebSocket
+    const socket = new SockJS('/ws');
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('Подключено: ' + frame);
+        stompClient.subscribe('/topic/notifications', function (notification) {
+            console.log('Получено уведомление: ', notification.body); // Логируем уведомление
+            $('#modalBody').text(notification.body);
+            $('#myModal').modal('show');
+        });
+    }, function (error) {
+        console.error('Ошибка подключения: ', error); // Логируем ошибку подключения
+    });
+
+    // Обработчик нажатия кнопки "Ок"
+    document.getElementById('acceptButton').addEventListener('click', function() {
+        const currentOrderId = $('#modalBody').text().match(/ID заявки: (\d+)/)[1]; // Извлечение ID заказа
+        fetch('/acceptOrder?orderId=' + currentOrderId, {
+            method: 'POST'
+        }).then(() => {
+            $('#myModal').modal('hide'); // Закрытие модального окна
+        });
+    });
+
+    function showTab(tabName) {
+        // Скрываем все вкладки
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        // Убираем активный класс у всех кнопок
+        const buttons = document.querySelectorAll('.tab-button');
+        buttons.forEach(button => button.classList.remove('active'));
+
+        // Показываем выбранную вкладку и добавляем активный класс к кнопке
+        document.getElementById(tabName).classList.add('active');
+        document.querySelector(`.tab-button[onclick="showTab('${tabName}')"]`).classList.add('active');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Архив</title>
+</head>
+<body>
+<h2>Архив</h2>
+<form th:action="@{/archive-filter}" method="get">
+    <label for="filterField">Фильтровать по:</label>
+    <select id="filterField" name="filterField">
+        <option value="idManager">ID Менеджера</option>
+        <option value="client">Клиенту</option>
+        <option value="creationDate">Дате создания</option>
+        <option value="deadline">Сроку исполнения</option>
+        <option value="gasMixture">Газовой смеси</option>
+        <option value="status">Статусу</option>
+        <option value="typeOrder">Типу заказа</option>
+        <option value="responsibleUserId">ID ответственного</option>
+    </select>
+
+    <label for="filterValue">Введите значение:</label>
+    <input type="text" id="filterValue" name="filterValue" required>
+
+    <button type="submit">Применить фильтр</button>
+</form>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>ID заказа</th>
+        <th>ID менеджера</th>
+        <th>Заказчик</th>
+        <th>Дата создания заказа</th>
+        <th>Срок исполнения</th>
+        <th>Газовая смесь</th>
+        <th>Объем баллонов</th>
+        <th>Количество баллонов</th>
+        <th>Статус</th>
+        <th>Тип заказа</th>
+        <th>ID ответственного</th>
+        <th>Имя ответственного</th>
+    </tr>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.gasOrderId}"></td>
+        <td th:text="${order.managerId}"></td>
+        <td th:text="${order.client}"></td>
+        <td th:text="${order.creationDate}"></td>
+        <td th:text="${order.deadline}"></td>
+        <td th:text="${order.gasMixture}"></td>
+        <td th:text="${order.gasСylinderVolume}"></td>
+        <td th:text="${order.numberOfGasCylinder}"></td>
+        <td th:text="${order.status}"></td>
+        <td th:text="${order.typeOrder}"></td>
+        <td th:text="${order.responsibleUserId}"></td>
+        <td th:text="${order.responsibleUserName}"></td>
+    </tr>
+</table>
+</body>
+</html>

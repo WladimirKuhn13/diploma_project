@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+</head>
+<body>
+<h1>Register</h1>
+<form action="#" th:action="@{/register}" th:object="${user}" method="post">
+    <label for="username">Имя пользователя:</label>
+    <input type="text" id="username" th:field="*{username}" required/>
+    <label for="firstname">Имя</label>
+    <input type="text" id="firstname" th:field="*{firstName}" required/>
+    <label for="lastname">Фамилия</label>
+    <input type="text" id="lastname" th:field="*{lastName}" required/>
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" th:field="*{password}" required/>
+    <label for="role">Должность</label>
+    <select id="role" th:field="*{roles}" required>
+        <option th:each="role : ${roles}"
+                th:value="${role.id}"
+                th:text="${role.name == 'ROLE_MANAGER' ? 'Менеджер' :
+                          role.name == 'ROLE_STOCK' ? 'Сотрудник склада' :
+                          role.name == 'ROLE_STOCK_HEAD' ? 'Руководитель склада' :
+                          role.name == 'ROLE_PREPARATION' ? 'Сотрудник участка подготовки' :
+                          role.name == 'ROLE_PREPARATION_HEAD' ? 'Руководитель участка подготовки' :
+                          role.name == 'ROLE_FILLING' ? 'Сотрудник участка наполнения' :
+                          role.name == 'ROLE_FILLING_HEAD' ? 'Руководитель участка наполнения' :
+                          role.name == 'ROLE_LAB_HEAD' ? 'Руководитель лаборатории' :
+                          role.name == 'ROLE_MANAGER_HEAD' ? 'Руководитель отдела продаж' :
+                          role.name == 'ROLE_LAB' ? 'Сотрудник лаборатории' : ''}"></option>
+    </select>
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>

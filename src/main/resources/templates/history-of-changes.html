@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>История изменений</title>
+</head>
+<body>
+<h2>История изменений</h2>
+<form th:action="@{/history-filter}" method="get">
+    <label for="filterField">Фильтровать по:</label>
+    <select id="filterField" name="filterField">
+        <option value="gasOrderId">ID заказа</option>
+        <option value="status">Статусу</option>
+    </select>
+
+    <label for="filterValue">Введите значение:</label>
+    <input type="text" id="filterValue" name="filterValue" required>
+
+    <button type="submit">Применить фильтр</button>
+</form>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>ID заказа</th>
+        <th>ID сотрудника</th>
+        <th>Дата изменения</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="history : ${allHistory}">
+        <td th:text="${history.id}"></td>
+        <td th:text="${history.gasOrderId}"></td>
+        <td th:text="${history.employeeId}"></td>
+        <td th:text="${history.date}"></td>
+        <td th:text="${history.status}"></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск газовой смеси на складе</title>
+</head>
+<body>
+<h1>Введите параметры поиска</h1>
+<form action="#" th:action="@{/stock-gas-mixtures/search-result}" th:object="${mixture}" method="post">
+    <label>Name Gas Mixture</label>
+    <input type="text" th:field="*{nameGasMixture}">
+    <label>Gas Сylinder Volume</label>
+    <input type="text" th:field="*{gasСylinderVolume}">
+    <label>Number Of Gas Cylinder</label>
+    <input type="text" th:field="*{numberOfGasCylinder}">
+    <button type="submit">Отправить</button>
+</form>
+</body>
+</html>

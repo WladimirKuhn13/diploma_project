@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать заявку</title>
+</head>
+<body>
+<h1>Введите данные для создания заявки</h1>
+<form action="#" th:action="@{/create-gas-order}" th:object="${gasOrder}" method="post">
+    <label>Название организации клиента</label>
+    <input type="text" th:field="*{client}" required>
+    <label>Введите состав газовой смеси</label>
+    <input type="text" th:field="*{gasMixture}" required>
+    <label>Введите объем баллона(ов)</label>
+    <input type="number" th:field="*{gasСylinderVolume}" required>
+    <label>Введите количество баллонов</label>
+    <input type="number" th:field="*{numberOfGasCylinder}" required>
+    <label>Укажите тип заявки</label>
+    <select th:field="*{typeOrder}">
+        <option th:value="Баллоны + ' ' + клиента" th:text="Баллоны + ' ' +   клиента"></option>
+        <option th:value="Новые + ' ' + баллоны" th:text="Новые + ' ' +   баллоны"></option>
+        <option th:value="Оборотные + ' ' + баллоны" th:text="Оборотные + ' ' +  баллоны"></option>
+    </select>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>

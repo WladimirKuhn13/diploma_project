@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты фильтрации</title>
+</head>
+<body>
+<div>
+    <h2>Результаты фильтрации</h2>
+    <a href="orders">
+        <button>На главную</button>
+    </a>
+</div>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>ID менеджера</th>
+        <th>Заказчик</th>
+        <th>Дата создания заказа</th>
+        <th>Срок исполнения</th>
+        <th>Газовая смесь</th>
+        <th>Объем баллонов</th>
+        <th>Количество баллонов</th>
+        <th>Статус</th>
+        <th>Тип заказа</th>
+        <th>ID ответственного</th>
+        <th>Имя ответственного</th>
+    </tr>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.managerId}"></td>
+        <td th:text="${order.client}"></td>
+        <td th:text="${order.creationDate}"></td>
+        <td th:text="${order.deadline}"></td>
+        <td th:text="${order.gasMixture}"></td>
+        <td th:text="${order.gasСylinderVolume}"></td>
+        <td th:text="${order.numberOfGasCylinder}"></td>
+        <td th:text="${order.status}"></td>
+        <td th:text="${order.typeOrder}"></td>
+        <td th:text="${order.responsibleUserId}"></td>
+        <td th:text="${order.responsibleUserName}"></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Новая смесь</title>
+</head>
+<body>
+<h1>Введите данные новой смеси</h1>
+<form action="#" th:action="@{/create-gas-mixture}" th:object="${mixture}" method="post">
+  <label>Введите состав газовой смеси</label>
+  <input type="text" th:field="*{nameGasMixture}" required>
+  <label>Введите объем баллона(ов)</label>
+  <input type="number" th:field="*{gasСylinderVolume}" required>
+  <label>Введите количество баллонов</label>
+  <input type="number" th:field="*{numberOfGasCylinder}" required>
+  <button type="submit">Создать</button>
+</form>
+<h3 th:text="${mixture.idEmployeeFilligArea}"></h3>
+</body>
+</html>

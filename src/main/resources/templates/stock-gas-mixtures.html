@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Склад</title>
+</head>
+<body>
+<h1>Оборотные баллоны на складе</h1>
+<div>
+  <div>
+    <a href="orders">
+      <button>На главную</button>
+    </a>
+  </div>
+  <div>
+    <a href="stock-gas-mixtures/search">
+      <button>Поиск по складу</button>
+    </a>
+  </div>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Газовая смесь</th>
+    <th>Объем баллонов</th>
+    <th>Количество баллонов</th>
+    <th>Статус</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="mixture : ${mixtures}">
+    <td th:text="${mixture.id}"></td>
+    <td th:text="${mixture.nameGasMixture}"></td>
+    <td th:text="${mixture.gasСylinderVolume}"></td>
+    <td th:text="${mixture.numberOfGasCylinder}"></td>
+    <td th:text="${mixture.status}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

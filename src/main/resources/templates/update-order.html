@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Info about gas order</title>
+</head>
+<body>
+<h1>Введите данные для обновления заявки</h1>
+<form action="#" th:action="@{person-update/{id}(id=${order.id})}" th:object="${order}" method="post">
+    <label>Изменить название организации клиента</label>
+    <input type="text" th:field="*{client}">
+    <label>Изменить состав газовой смеси</label>
+    <input type="text" th:field="*{gasMixture}">
+    <label>Изменить объем баллона(ов)</label>
+    <input type="number" th:field="*{gasСylinderVolume}">
+    <label>Изменить количество баллонов</label>
+    <input type="number" th:field="*{numberOfGasCylinder}">
+</form>
+
+</body>
+</html>

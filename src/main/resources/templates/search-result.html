@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Результаты поиска</title>
+</head>
+<body>
+<h1>Результаты поиска</h1>
+<div>
+  <a href="orders">
+    <button>На главную</button>
+  </a>
+</div>
+<div th:if="${mixture}">
+<table>
+  <thead>
+  <tr>
+    <th>Газовая смесь</th>
+    <th>Объем газового баллона</th>
+    <th>Количество газовых баллонов</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td th:text="${mixture.nameGasMixture}"></td>
+    <td th:text="${mixture.gasСylinderVolume}"></td>
+    <td th:text="${mixture.numberOfGasCylinder}"></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+<h3 th:text="${messageAboutResult}"></h3>
+</body>
+</html>

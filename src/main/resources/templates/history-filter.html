@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты фильтрации</title>
+</head>
+<body>
+<div>
+    <h2>Результаты фильтрации</h2>
+    <a href="orders">
+        <button>На главную</button>
+    </a>
+</div>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>ID заказа</th>
+        <th>ID сотрудника</th>
+        <th>Дата изменения</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="history : ${historyOfChanges}">
+        <td th:text="${history.id}"></td>
+        <td th:text="${history.gasOrderId}"></td>
+        <td th:text="${history.employeeId}"></td>
+        <td th:text="${history.date}"></td>
+        <td th:text="${history.status}"></td>
+    </tr>
+</table>
+</body>
+</html>

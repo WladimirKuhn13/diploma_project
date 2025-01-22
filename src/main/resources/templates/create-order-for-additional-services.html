@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание заявки на дополнительные услуги</title>
+</head>
+<body>
+<h1>Введите данные для создания заявки</h1>
+<form th:action="@{/create-order-for-additional-services}" method="post">
+  <label>Введите тип услуги</label>
+  <select th:field="*{order.typeService}">
+    <option th:each="type : ${allType}"
+            th:value="${type}"
+            th:text="${type}">
+    </option>
+  </select>
+  <label>Введите количество услуг</label>
+  <input type="number" th:field="*{order.numberOfServices}" required>
+  <button type="submit">Создать</button>
+</form>
+</body>
+</html>
